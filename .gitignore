@@ -1,0 +1,6 @@
+datas/
+log/
+__pycache__/
+output/
+test.jpg
+test_captions.txt
