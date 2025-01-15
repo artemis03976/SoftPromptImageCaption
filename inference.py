@@ -16,14 +16,12 @@ def inference(args, model, accelerator):
     with torch.inference_mode():
         for img_name, imgs in test_loader:
             captions = model.generate(imgs)
-            print(captions)
-            # break
-
-            total_captions.update({img_name[i]: captions[i] for i in range(len(img_name))})
-
+            total_captions.update({img_name[i]: captions[5 * i:5 * (i + 1)] for i in range(len(img_name))})
+    
     with open('test_captions.txt', 'w') as f:
         for key, value in total_captions.items():
-            f.write(f'{key}\t{value}\n')
+            for i, caption in enumerate(value):
+                f.write(f'{key}#{i}\t{caption}\n')
 
 
 def main():
@@ -56,7 +54,7 @@ def main():
         help=''
     )
     parser.add_argument(
-        '--batch_size', type=int, default=4,
+        '--batch_size', type=int, default=16,
         help='batch size for training mask'
     )
 
